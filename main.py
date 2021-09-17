@@ -418,9 +418,11 @@ def main():
                     for person_id in range(len(list_of_persons)):
                         if list_of_persons[person_id].start == current_level:
                             list_of_persons[person_id].change_status()
+                            current_weight = len(list_of_persons) * 70
                         elif list_of_persons[person_id].end == current_level:
                             list_of_persons[person_id].change_status()
                             list_of_persons[person_id] = 0
+                            current_weight = len(list_of_persons) * 70
 
                     while 0 in list_of_persons:
                         list_of_persons.remove(0)
@@ -435,9 +437,11 @@ def main():
                     for person_id in range(len(list_of_persons)):
                         if list_of_persons[person_id].start == current_level:
                             list_of_persons[person_id].change_status()
+                            current_weight = len(list_of_persons) * 70
                         elif list_of_persons[person_id].end == current_level:
                             list_of_persons[person_id].change_status()
                             list_of_persons[person_id] = 0
+                            current_weight = len(list_of_persons) * 70
 
                     while 0 in list_of_persons:
                         list_of_persons.remove(0)
@@ -447,11 +451,8 @@ def main():
                     pygame.time.wait(1000)
                 else:
                     elevator_y += 1
-        current_weight = len(list_of_persons)*70
 
-        print("Downward", queue_of_downward_stops)
-        print("Upward = ", queue_of_upward_stops)
-        print(list_of_persons)
+
         draw_amount_of_people_waiting(amount_of_people)
         draw_elevator(elevator_y, current_weight, counter)
     pygame.quit()
