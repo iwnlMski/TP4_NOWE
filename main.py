@@ -23,13 +23,14 @@ class Person:
         self.status = self.status_list[0]
         self.position_y = 950 - start_floor*200 - 120
         self.position_x = 200 + (end_floor-1)*80
+        self.text_position = (self.position_x+20, self.position_y-50)
 
     def change_status(self):
         if self.status == "WAIT":
             self.status = "IN"
         elif self.status == "IN":
             self.status = "OUT"
-
+            
 
 class Level:
     def __init__(self, number, y):
