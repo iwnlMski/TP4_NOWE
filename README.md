@@ -1,5 +1,5 @@
 # Technika Programowania
-![alt text](https://github.com/iwnlMski/TechnikaProgramowania3/blob/master/readmeimg/TP3image1.PNG?raw=true)
+![alt text](https://github.com/iwnlMski/TP4_NOWE/blob/main/readmeimages/TP4photo1.png?raw=true)
 
 ### Projekt numer 4
 ### Autor projektu: Seweryn Majewski ACiR WETI 2sem. Indeks: 181675
@@ -40,16 +40,10 @@ który został również użyty w dyskach twardych z tego samego powodu
 ##### dzięki niej dużo łatwiej odwołać się do numeru piętra i jednocześnie do jego położenia w osi Y
 
 ### 2. GUI
-![alt text](https://github.com/iwnlMski/TechnikaProgramowania3/blob/master/readmeimg/TP3image2.PNG?raw=true)
+![alt text](https://github.com/iwnlMski/TP4_NOWE/blob/main/readmeimages/TP4photo2.PNG?raw=true)
 #
-Po włączeniu programu jedynym włączonym przyciskiem jest przycisk “Submit”, który
-przekazuję do programu liczbę wpisaną obok. Liczba ta jest liczbą linii pliku które chcemy
-pominąć. 
+Na kazdym pietrze zostaly umieszczone przyciski oznaczajace pietra na ktore dana osoba chce sie udac
+oraz przyciski oznaczone jako "+" i "-" które służą do zwiększenia lub zmniejszenia ilosci jadacych na dane pietro
 #
-![alt text](https://github.com/iwnlMski/TechnikaProgramowania3/blob/master/readmeimg/TP3image3.PNG?raw=true)
-#
-Po wpisaniu poprawnej wartości podśwetlają się dodatkowe przyciski. W tym momencie
-możemy dostosować szybkośc symulacji oraz przybliżenie wykresu. Warto dodać iż gdy
-klikniemy “Run”, nie będziemy w stanie tego już zmienić aż do zakończenia symulacji albo
-zakończenia programu. 
+
 
