@@ -21,6 +21,8 @@ class Person:
         self.weight = 70
         self.status_list = ["WAIT", "IN", "OUT"]
         self.status = self.status_list[0]
+        self.position_y = 950 - start_floor*200 - 120
+        self.position_x = 200 + (end_floor-1)*80
 
     def change_status(self):
         if self.status == "WAIT":
@@ -73,7 +75,6 @@ def draw_buttons():
     level_four_text = comic_sans.render('4', False, (0, 0, 0))
     plus_button = comic_sans.render('+', False, (0, 0, 0))
     minus_button = comic_sans.render('-', False, (0, 0, 0))
-    placeholder = comic_sans.render('9', False, (0, 0, 0))
 
     pygame.draw.rect(WIN, BLACK, (50, 130, BUTTON_WIDTH, BUTTON_HEIGHT), 2)
     WIN.blit(minus_button, (100, 130))
@@ -163,29 +164,25 @@ def draw_amount_of_people_waiting(dict_of_people):
     WIN.blit(comic_sans.render(str(dict_of_people["level1"]["to4"]), False, (0, 0, 0)), (120, 820))
 
 
-def add_to_queue(start_level, end_level, l, current_level, current_direction):
-    l.append(start_level)
-    l.append(end_level)
+def draw_people():
+    pass
 
-# if len(l) == 0:
-    #     l.append(start_level)
-    #     l.append(end_level)
-    #     return direction
-    # elif start_level >= current_level and start_level not in l and current_direction == "UP":
-    #     l.insert(0, start_level)
-    #     if end_level not in l:
-    #         l.insert(len(l-1), end_level)
-    # elif start_level <= current_level and start_level not in l and current_direction == "DOWN":
-    #     l.insert(0, start_level)
-    #     if end_level not in l:
-    #         l.insert(len(l-1), end_level)
-    # elif start_level in l and end_level not in l:
-    #     l.append(end_level)
-    # elif start_level not in l and end_level in l:
-    #     l.append(start_level)
-    # else:
-    #     l.append(start_level)
-    #     l.append(end_level)
+
+def add_to_queue(start_level, end_level, upward, downward, current_level, current_direction):
+    if start_level >= current_level and start_level not in upward:
+        upward.append(start_level)
+    elif start_level < current_level and start_level not in downward:
+        downward.append(start_level)
+    if end_level >= current_level and end_level > start_level and end_level not in upward:
+        upward.append(end_level)
+    if end_level < current_level and end_level not in downward:
+        downward.append(end_level)
+    if current_direction == "NONE" and start_level >= current_level:
+        return "UP"
+    elif current_direction == "NONE" and start_level < current_level:
+        return "DOWN"
+    else:
+        return current_direction
 
 
 def main():
@@ -207,7 +204,8 @@ def main():
     level_2 = Level(2, 550)
     level_3 = Level(3, 350)
     level_4 = Level(4, 150)
-    queue_of_stops = list()
+    queue_of_upward_stops = list()
+    queue_of_downward_stops = list()
     current_direction = "NONE"
 
     while run:
@@ -234,73 +232,97 @@ def main():
                 if 50 <= pygame.mouse.get_pos()[0] <= 90:
                     if 130 <= pygame.mouse.get_pos()[1] <= 170:
                         print("Take me from Level 4 to level 1")
-                        add_to_queue(4, 1, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(4, 1, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level4"]["to1"]):
                             list_of_persons.append(Person(4, 1))
 
                     elif 175 <= pygame.mouse.get_pos()[1] <= 215:
                         print("Take me from Level 4 to level 2")
-                        add_to_queue(4, 2, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(4, 2, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level4"]["to2"]):
                             list_of_persons.append(Person(4, 2))
 
                     elif 220 <= pygame.mouse.get_pos()[1] <= 260:
                         print("Take me from Level 4 to level 3")
-                        add_to_queue(4, 3, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(4, 3, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level4"]["to3"]):
                             list_of_persons.append(Person(4, 3))
 
                     elif 330 <= pygame.mouse.get_pos()[1] <= 370:
                         print("Take me from Level 3 to level 1")
-                        add_to_queue(3, 1, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(3, 1, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level3"]["to1"]):
                             list_of_persons.append(Person(3, 1))
 
                     elif 375 <= pygame.mouse.get_pos()[1] <= 415:
                         print("Take me from Level 3 to level 2")
-                        add_to_queue(3, 2, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(3, 2, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level3"]["to2"]):
                             list_of_persons.append(Person(3, 2))
 
                     elif 420 <= pygame.mouse.get_pos()[1] <= 460:
                         print("Take me from Level 3 to level 4")
-                        add_to_queue(3, 4, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(3, 4, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level3"]["to4"]):
                             list_of_persons.append(Person(3, 4))
 
                     elif 530 <= pygame.mouse.get_pos()[1] <= 570:
                         print("Take me from Level 2 to level 1")
-                        add_to_queue(2, 1, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(2, 1, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level2"]["to1"]):
                             list_of_persons.append(Person(2, 1))
 
                     elif 575 <= pygame.mouse.get_pos()[1] <= 615:
                         print("Take me from Level 2 to level 3")
-                        add_to_queue(2, 3, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(2, 3, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level2"]["to3"]):
                             list_of_persons.append(Person(2, 3))
 
                     elif 620 <= pygame.mouse.get_pos()[1] <= 660:
                         print("Take me from Level 2 to level 4")
-                        add_to_queue(2, 4, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(2, 4, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level2"]["to4"]):
                             list_of_persons.append(Person(2, 4))
 
                     elif 730 <= pygame.mouse.get_pos()[1] <= 770:
                         print("Take me from Level 1 to level 2")
-                        add_to_queue(1, 2, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(1, 2, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level1"]["to2"]):
                             list_of_persons.append(Person(1, 2))
 
                     elif 775 <= pygame.mouse.get_pos()[1] <= 815:
                         print("Take me from Level 1 to level 3")
-                        add_to_queue(1, 3, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(1, 3, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level1"]["to3"]):
                             list_of_persons.append(Person(1, 3))
 
                     elif 820 <= pygame.mouse.get_pos()[1] <= 860:
                         print("Take me from Level 1 to level 4")
-                        add_to_queue(1, 4, queue_of_stops, current_level, current_direction)
+                        current_direction = add_to_queue(1, 4, queue_of_upward_stops, queue_of_downward_stops, current_level, current_direction)
+                        queue_of_upward_stops.sort()
+                        queue_of_downward_stops.sort(reverse=True)
                         for number in range(amount_of_people["level1"]["to4"]):
                             list_of_persons.append(Person(1, 4))
 
@@ -378,35 +400,57 @@ def main():
                     elif 820 <= pygame.mouse.get_pos()[1] <= 860:
                         if amount_of_people["level1"]["to4"] <= 7:
                             amount_of_people["level1"]["to4"] += 1
-        if counter == 300 and len(queue_of_stops) == 0:
+        if counter == 300 and current_direction == "NONE":
             counter = 0
-            queue_of_stops.append(1)
-
-        if len(queue_of_stops) != 0:
-            if queue_of_stops[0] == current_level:
-                for person_id in range(len(list_of_persons)):
-                    if list_of_persons[person_id].start == current_level:
-                        list_of_persons[person_id].change_status()
-                        current_weight += 70
-                    elif list_of_persons[person_id].end == current_level:
-                        list_of_persons[person_id].change_status()
-                        current_weight -= 70
-                        list_of_persons[person_id] = 0
-
-                while 0 in list_of_persons:
-                    list_of_persons.remove(0)
-
-                queue_of_stops.pop(0)
-                draw_elevator(elevator_y, current_weight, counter)
-                pygame.time.wait(1000)
-            elif queue_of_stops[0] > current_level:
-                elevator_y -= 1
-                current_direction = "UP"
-            elif queue_of_stops[0] < current_level:
-                elevator_y += 1
-                current_direction = "DOWN"
-        else:
+            queue_of_downward_stops.append(1)
+            current_direction = "DOWN"
+        if len(queue_of_upward_stops) == 0 and current_direction == "UP" and len(queue_of_downward_stops) != 0:
+            current_direction = "DOWN"
+        elif len(queue_of_upward_stops) != 0 and current_direction == "DOWN" and len(queue_of_downward_stops) == 0:
+            current_direction = "UP"
+        elif len(queue_of_upward_stops) == 0 and len(queue_of_downward_stops) == 0:
             current_direction = "NONE"
+
+        if len(queue_of_upward_stops) != 0 or len(queue_of_downward_stops) != 0:
+            if current_direction == "UP":
+                if queue_of_upward_stops[0] == current_level:
+                    for person_id in range(len(list_of_persons)):
+                        if list_of_persons[person_id].start == current_level:
+                            list_of_persons[person_id].change_status()
+                        elif list_of_persons[person_id].end == current_level:
+                            list_of_persons[person_id].change_status()
+                            list_of_persons[person_id] = 0
+
+                    while 0 in list_of_persons:
+                        list_of_persons.remove(0)
+
+                    queue_of_upward_stops.pop(0)
+                    draw_elevator(elevator_y, current_weight, counter)
+                    pygame.time.wait(1000)
+                else:
+                    elevator_y -= 1
+            elif current_direction == "DOWN":
+                if queue_of_downward_stops[0] == current_level:
+                    for person_id in range(len(list_of_persons)):
+                        if list_of_persons[person_id].start == current_level:
+                            list_of_persons[person_id].change_status()
+                        elif list_of_persons[person_id].end == current_level:
+                            list_of_persons[person_id].change_status()
+                            list_of_persons[person_id] = 0
+
+                    while 0 in list_of_persons:
+                        list_of_persons.remove(0)
+
+                    queue_of_downward_stops.pop(0)
+                    draw_elevator(elevator_y, current_weight, counter)
+                    pygame.time.wait(1000)
+                else:
+                    elevator_y += 1
+        current_weight = len(list_of_persons)*70
+
+        print("Downward", queue_of_downward_stops)
+        print("Upward = ", queue_of_upward_stops)
+        print(list_of_persons)
         draw_amount_of_people_waiting(amount_of_people)
         draw_elevator(elevator_y, current_weight, counter)
     pygame.quit()
